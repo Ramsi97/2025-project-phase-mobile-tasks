@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:task_6/add_or_update_page.dart';
+import 'package:task_6/detail.dart';
+import 'package:task_6/search.dart';
 import 'home_page.dart';
 
 void main() {
@@ -21,7 +24,14 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      initialRoute: "/home",
+
+      routes: {
+        "/home": (context) => HomePage(),
+        "/search": (context) => Search(),
+        "/addOrUpdate": (context) => AddOrUpdatePage(),
+        "/detail": (context) => Detail(),
+      },
     );
   }
 }

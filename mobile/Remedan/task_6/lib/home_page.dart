@@ -20,10 +20,7 @@ class _HomePageState extends State<HomePage> {
     return List.generate(count, (int index) {
       return GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Detail()),
-          );
+          Navigator.pushNamed(context, "/detail");
         },
         child: Card(
           child: Column(
@@ -161,10 +158,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Search()),
-                    );
+                    Navigator.pushNamed(context, "/search");
                   },
                   icon: Icon(Icons.search),
                 ),
@@ -180,10 +174,7 @@ class _HomePageState extends State<HomePage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddOrUpdatePage()),
-          );
+          Navigator.pushNamed(context, "/addOrUpdate");
         },
         backgroundColor: Color.fromRGBO(63, 81, 243, 1), //rgba(63, 81, 243, 1)
         shape: CircleBorder(),
