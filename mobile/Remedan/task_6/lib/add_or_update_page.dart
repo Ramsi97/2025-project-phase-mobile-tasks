@@ -10,6 +10,21 @@ class AddOrUpdatePage extends StatefulWidget {
 }
 
 class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  XFile? _imageFile;
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final picked = await _picker.pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      setState(() {
+        _imageFile = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,155 +34,207 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Form(
+            key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 366,
-                  height: 190,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color.fromRGBO(243, 243, 243, 1),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: 366,
+                    height: 190,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Color.fromRGBO(243, 243, 243, 1),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Icons.image_outlined, size: 48),
+                          SizedBox(height: 20),
+                          Text(
+                            "Upload Image",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: Color.fromRGBO(62, 62, 62, 1),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.image_outlined, size: 48),
-                        SizedBox(height: 20),
-                        Text(
-                          "Upload Image",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Color.fromRGBO(62, 62, 62, 1),
-                          ),
-                        ),
-                      ],
-                    ),
+                ),
+
+                _imageFile != null
+                    ? Image.file(File(_imageFile!.path), height: 150)
+                    : Text("No image selected"),
+                TextButton(onPressed: _pickImage, child: Text("Pick Image")),
+
+                // image accepter form
+                SizedBox(height: 10),
+
+                Text(
+                  "name",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    fontFamily: "Poppins",
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                      child: Text("name"),
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color.fromRGBO(243, 243, 243, 1),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 243, 243, 1),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 243, 243, 1),
-                            width: 2,
-                          ),
-                        ), //rgba(243, 243, 243, 1)
+
+                SizedBox(height: 10),
+
+                TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color.fromRGBO(243, 243, 243, 1),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(243, 243, 243, 1),
                       ),
                     ),
-                  ],
-                ),
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                      child: Text("catagory"),
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-
-                        fillColor: Color.fromRGBO(243, 243, 243, 1),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 243, 243, 1),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 243, 243, 1),
-                            width: 2,
-                          ),
-                        ), //rgba(243, 243, 243, 1)
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(243, 243, 243, 1),
+                        width: 2,
                       ),
                     ),
-                  ],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "invalid";
+                    }
+                    return null;
+                  },
                 ),
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                      child: Text("Price"),
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color.fromRGBO(243, 243, 243, 1),
-                        suffixIcon: Text("\$"),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 243, 243, 1),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 243, 243, 1),
-                            width: 2,
-                          ),
-                        ),
+                SizedBox(height: 10),
+
+                Text(
+                  "Catagory",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    fontFamily: "Poppins",
+                  ),
+                ),
+
+                SizedBox(height: 10),
+
+                TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color.fromRGBO(243, 243, 243, 1),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(243, 243, 243, 1),
                       ),
                     ),
-                  ],
-                ),
-
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 16, 0, 16),
-                      child: Text("description"),
-                    ),
-                    TextField(
-                      maxLines: 10,
-                      minLines: 6,
-                      decoration: InputDecoration(
-                        filled: true,
-
-                        fillColor: Color.fromRGBO(243, 243, 243, 1),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 243, 243, 1),
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(243, 243, 243, 1),
-                            width: 2,
-                          ),
-                        ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(243, 243, 243, 1),
+                        width: 2,
                       ),
                     ),
-                  ],
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "invalid";
+                    }
+                    return null;
+                  },
                 ),
+                SizedBox(height: 10),
+
+                Text(
+                  "Price",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    fontFamily: "Poppins",
+                  ),
+                ),
+
+                SizedBox(height: 10),
+
+                TextFormField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color.fromRGBO(243, 243, 243, 1),
+                    suffixIcon: Text("\$"),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(243, 243, 243, 1),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(243, 243, 243, 1),
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "invalid";
+                    }
+                    return null;
+                  },
+                ),
+
+                SizedBox(height: 10),
+
+                Text(
+                  "description",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    fontFamily: "Poppins",
+                  ),
+                ),
+
+                SizedBox(height: 10),
+
+                TextFormField(
+                  minLines: 5,
+                  maxLines: 15,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color.fromRGBO(243, 243, 243, 1),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(243, 243, 243, 1),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(243, 243, 243, 1),
+                        width: 2,
+                      ),
+                    ),
+                  ),
+
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Invalid";
+                    }
+                    return null;
+                  },
+                ),
+
+                // updated until this
               ],
             ),
           ),
@@ -192,7 +259,9 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                   backgroundColor: Color.fromRGBO(63, 81, 243, 1),
                   foregroundColor: Colors.white,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {}
+                },
                 child: Text("Add"),
               ),
             ),
@@ -209,7 +278,9 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                   foregroundColor: Colors.red,
                   side: BorderSide(color: Colors.red, width: 1),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  _formKey.currentState!.reset();
+                },
                 child: Text("Delete"),
               ),
             ),
