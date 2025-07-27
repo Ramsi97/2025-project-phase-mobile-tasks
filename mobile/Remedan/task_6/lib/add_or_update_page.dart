@@ -12,6 +12,10 @@ class AddOrUpdatePage extends StatefulWidget {
 class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _catagoryController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
   XFile? _imageFile;
 
   final ImagePicker _picker = ImagePicker();
@@ -39,40 +43,44 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: 366,
-                    height: 190,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Color.fromRGBO(243, 243, 243, 1),
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.image_outlined, size: 48),
-                          SizedBox(height: 20),
-                          Text(
-                            "Upload Image",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: Color.fromRGBO(62, 62, 62, 1),
+                  onTap: _pickImage,
+                  child: _imageFile == null
+                      ? Center(
+                          child: Container(
+                            width: 366,
+                            height: 190,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Color.fromRGBO(243, 243, 243, 1),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.image_outlined, size: 48),
+                                  SizedBox(height: 20),
+                                  Text(
+                                    "Upload Image",
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: Color.fromRGBO(62, 62, 62, 1),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
+                        )
+                      : Center(
+                          child: Image.file(
+                            File(_imageFile!.path),
+                            height: 190,
+                          ),
+                        ),
                 ),
-
-                _imageFile != null
-                    ? Image.file(File(_imageFile!.path), height: 150)
-                    : Text("No image selected"),
-                TextButton(onPressed: _pickImage, child: Text("Pick Image")),
 
                 // image accepter form
                 SizedBox(height: 10),
@@ -89,6 +97,7 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                 SizedBox(height: 10),
 
                 TextFormField(
+                  controller: _nameController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Color.fromRGBO(243, 243, 243, 1),
@@ -128,6 +137,7 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                 SizedBox(height: 10),
 
                 TextFormField(
+                  controller: _catagoryController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Color.fromRGBO(243, 243, 243, 1),
@@ -166,6 +176,7 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                 SizedBox(height: 10),
 
                 TextFormField(
+                  controller: _priceController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Color.fromRGBO(243, 243, 243, 1),
@@ -186,7 +197,11 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "invalid";
+                      return "please enter price";
+                    }
+
+                    if (int.tryParse(value) == null) {
+                      return "Please enter only integers";
                     }
                     return null;
                   },
@@ -206,6 +221,7 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                 SizedBox(height: 10),
 
                 TextFormField(
+                  controller: _descriptionController,
                   minLines: 5,
                   maxLines: 15,
                   decoration: InputDecoration(
@@ -225,15 +241,7 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                       ),
                     ),
                   ),
-
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Invalid";
-                    }
-                    return null;
-                  },
                 ),
-
                 // updated until this
               ],
             ),
@@ -244,8 +252,7 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisSize: MainAxisSize
-              .min, // So it only takes as much vertical space as needed
+          mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 16),
             SizedBox(
@@ -260,7 +267,24 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {}
+                  if (_formKey.currentState!.validate() && _imageFile != null) {
+                    final product = Product(
+                      name: _nameController.text,
+                      catagory: _catagoryController.text,
+                      price: int.parse(_priceController.text),
+                      description: _descriptionController.text,
+                      imagefile: _imageFile!.path,
+                    );
+                    Navigator.pop(context, product);
+                  } else if (_imageFile == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          "Please complete all fields and pick an image",
+                        ),
+                      ),
+                    );
+                  }
                 },
                 child: Text("Add"),
               ),
@@ -280,6 +304,9 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                 ),
                 onPressed: () {
                   _formKey.currentState!.reset();
+                  setState(() {
+                    _imageFile = null;
+                  });
                 },
                 child: Text("Delete"),
               ),
@@ -289,4 +316,20 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
       ),
     );
   }
+}
+
+class Product {
+  final String name;
+  final String catagory;
+  final int price;
+  final String description;
+  final String imagefile;
+
+  Product({
+    required this.name,
+    required this.catagory,
+    required this.price,
+    required this.description,
+    required this.imagefile,
+  });
 }
