@@ -1,9 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task_6/add_or_update_page.dart';
-import 'package:task_6/search.dart';
-
-import 'detail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,70 +15,83 @@ class _HomePageState extends State<HomePage> {
   String name = "Yohannes";
   String formattedDate = DateFormat('MMMM, dd yyyy').format(DateTime.now());
 
-  List<GestureDetector> _buildCardWidget(int count) {
-    return List.generate(count, (int index) {
-      return GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, "/detail");
-        },
-        child: Card(
-          child: Column(
-            children: [
-              Image.asset("images/shoes.png"),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Derby Leather Shoes",
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: Color.fromRGBO(62, 62, 62, 1),
-                        fontWeight: FontWeight.bold,
-                      ),
+  List<Product> products = [];
+
+  GestureDetector _createCardWidget(
+    String name,
+    imageFile,
+    catagory,
+    double price,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, "/detail");
+      },
+      child: Card(
+        child: Column(
+          children: [
+            Image.file(File(imageFile)),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontSize: 17,
+                      color: Color.fromRGBO(62, 62, 62, 1),
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      "\$120",
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Color.fromRGBO(62, 62, 62, 1),
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  Text(
+                    "\$$price",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color.fromRGBO(62, 62, 62, 1),
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Men’s shoe",
-                      style: TextStyle(
-                        color: Color.fromRGBO(170, 170, 170, 10),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Text(
-                          "(4.0)",
-                          style: TextStyle(
-                            color: Color.fromRGBO(170, 170, 170, 1),
-                          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    catagory,
+                    style: TextStyle(color: Color.fromRGBO(170, 170, 170, 10)),
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.star, color: Colors.yellow),
+                      Text(
+                        "(4.0)",
+                        style: TextStyle(
+                          color: Color.fromRGBO(170, 170, 170, 1),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
-    });
+      ),
+    );
+  }
+
+  void _gotoAddProduct() async {
+    final result = await Navigator.pushNamed(context, "/addOrUpdate");
+
+    if (result is Product) {
+      setState(() {
+        products.add(result);
+      });
+    }
   }
 
   @override
@@ -167,16 +179,27 @@ class _HomePageState extends State<HomePage> {
 
             SizedBox(height: 10),
 
-            Expanded(child: ListView(children: _buildCardWidget(3))),
+            Expanded(
+              child: ListView.builder(
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  final product = products[index];
+                  return _createCardWidget(
+                    product.name,
+                    product.imagefile,
+                    product.catagory,
+                    product.price,
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, "/addOrUpdate");
-        },
-        backgroundColor: Color.fromRGBO(63, 81, 243, 1), //rgba(63, 81, 243, 1)
+        onPressed: _gotoAddProduct,
+        backgroundColor: Color.fromRGBO(63, 81, 243, 1),
         shape: CircleBorder(),
         child: Icon(Icons.add, size: 36.0, color: Colors.white),
       ),

@@ -242,7 +242,6 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                     ),
                   ),
                 ),
-                // updated until this
               ],
             ),
           ),
@@ -271,12 +270,12 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
                     final product = Product(
                       name: _nameController.text,
                       catagory: _catagoryController.text,
-                      price: int.parse(_priceController.text),
+                      price: double.parse(_priceController.text),
                       description: _descriptionController.text,
                       imagefile: _imageFile!.path,
                     );
                     Navigator.pop(context, product);
-                  } else if (_imageFile == null) {
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -321,7 +320,7 @@ class _AddOrUpdatePageState extends State<AddOrUpdatePage> {
 class Product {
   final String name;
   final String catagory;
-  final int price;
+  final double price;
   final String description;
   final String imagefile;
 
