@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:task_6/add_or_update_page.dart';
 
 class Detail extends StatefulWidget {
   const Detail({super.key});
@@ -48,172 +51,161 @@ class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
+    final args = ModalRoute.of(context)!.settings.arguments;
+    if (args is Product) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                  child: Image.file(
+                    File(args.imagefile),
+                    height: 200,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-              clipBehavior: Clip.antiAlias,
-              child: Image.asset(
-                "images/shoes2.png",
-                height: 286,
-                width: 430,
-                fit: BoxFit.fitHeight,
-              ),
-            ),
-            SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 8, 8, 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Men’s shoe",
-                    style: TextStyle(
-                      color: Color.fromRGBO(170, 170, 170, 1), // Fixed alpha
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'Poppins',
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.star, color: Colors.yellow),
-                      Text(
-                        "(4.0)",
-                        style: TextStyle(
-                          color: Color.fromRGBO(
-                            170,
-                            170,
-                            170,
-                            1,
-                          ), // Fixed alpha
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Sora',
-                        ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 8, 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      args.catagory,
+                      style: const TextStyle(
+                        color: Color.fromRGBO(170, 170, 170, 1), // Fixed alpha
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Poppins',
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const Row(
+                      children: [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Text(
+                          "(4.0)",
+                          style: TextStyle(
+                            color: Color.fromRGBO(
+                              170,
+                              170,
+                              170,
+                              1,
+                            ), // Fixed alpha
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Sora',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Derby Leather Shoes",
-                    style: TextStyle(
-                      color: Color.fromRGBO(62, 62, 62, 1), // Fixed alpha
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Poppins',
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      args.name,
+                      style: const TextStyle(
+                        color: Color.fromRGBO(62, 62, 62, 1), // Fixed alpha
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                    Text(
+                      "\$${args.price}",
+                      style: const TextStyle(
+                        color: Color.fromRGBO(62, 62, 62, 1), // Fixed alpha
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Container(
+                margin: EdgeInsets.all(16),
+                child: Text(
+                  args.description,
+                  style: TextStyle(
+                    color: Color.fromRGBO(102, 102, 102, 1),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    fontFamily: "Poppins",
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 152,
+                height: 50,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    foregroundColor: Colors.red,
+                    side: BorderSide(
+                      color: Colors.red, // 🔹 Border color
+                      width: 1, // Optional: border thickness
                     ),
                   ),
-                  Text(
-                    "\$120",
-                    style: TextStyle(
-                      color: Color.fromRGBO(62, 62, 62, 1), // Fixed alpha
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Poppins',
+                  onPressed: () {},
+                  child: Text("Delete"),
+                ),
+              ),
+
+              SizedBox(width: 16),
+              SizedBox(
+                width: 152,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
+                    backgroundColor: Color.fromRGBO(
+                      63,
+                      81,
+                      243,
+                      1,
+                    ), //rgba(63, 81, 243, 1)
+                    foregroundColor: Colors.white,
                   ),
-                ],
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.all(16.0),
-              width: double.infinity,
-              child: Text(
-                "Size:",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
-                  fontFamily: "Poppins",
+                  onPressed: () {},
+                  child: Text("Update"),
                 ),
               ),
-            ),
-
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(children: _listNumber(6)),
-            ),
-
-            Container(
-              margin: EdgeInsets.all(16),
-              child: Text(
-                "A derby leather shoe is a classic and versatile footwear option characterized by its open lacing system, where the shoelace eyelets are sewn on top of the vamp (the upper part of the shoe). This design feature provides a more relaxed and casual look compared to the closed lacing system of oxford shoes. Derby shoes are typically made of high-quality leather, known for its durability and elegance, making them suitable for both formal and casual occasions. With their timeless style and comfortable fit, derby leather shoes are a staple in any well-rounded wardrobe.",
-
-                style: TextStyle(
-                  color: Color.fromRGBO(102, 102, 102, 1),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  fontFamily: "Poppins",
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 152,
-              height: 50,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  foregroundColor: Colors.red,
-                  side: BorderSide(
-                    color: Colors.red, // 🔹 Border color
-                    width: 1, // Optional: border thickness
-                  ),
-                ),
-                onPressed: () {},
-                child: Text("Delete"),
-              ),
-            ),
-
-            SizedBox(width: 16),
-            SizedBox(
-              width: 152,
-              height: 50,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  backgroundColor: Color.fromRGBO(
-                    63,
-                    81,
-                    243,
-                    1,
-                  ), //rgba(63, 81, 243, 1)
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: () {},
-                child: Text("Update"),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold();
+    }
   }
 }

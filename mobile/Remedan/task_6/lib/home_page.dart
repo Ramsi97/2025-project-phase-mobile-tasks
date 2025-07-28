@@ -17,27 +17,32 @@ class _HomePageState extends State<HomePage> {
 
   List<Product> products = [];
 
-  GestureDetector _createCardWidget(
-    String name,
-    imageFile,
-    catagory,
-    double price,
-  ) {
+  GestureDetector _createCardWidget(Product product) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, "/detail");
+        Navigator.pushNamed(context, "/detail", arguments: product);
       },
       child: Card(
         child: Column(
           children: [
-            Image.file(File(imageFile)),
+            ClipRRect(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(12), // 👈 Curve only top corners
+              ),
+              child: Image.file(
+                File(product.imagefile),
+                height: 200,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    name,
+                    product.name,
                     style: TextStyle(
                       fontSize: 17,
                       color: Color.fromRGBO(62, 62, 62, 1),
@@ -45,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Text(
-                    "\$$price",
+                    "\$${product.price}",
                     style: TextStyle(
                       fontSize: 15,
                       color: Color.fromRGBO(62, 62, 62, 1),
@@ -61,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    catagory,
+                    product.catagory,
                     style: TextStyle(color: Color.fromRGBO(170, 170, 170, 10)),
                   ),
                   Row(
@@ -184,12 +189,7 @@ class _HomePageState extends State<HomePage> {
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];
-                  return _createCardWidget(
-                    product.name,
-                    product.imagefile,
-                    product.catagory,
-                    product.price,
-                  );
+                  return _createCardWidget(product);
                 },
               ),
             ),
