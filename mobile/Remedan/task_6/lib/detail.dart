@@ -11,44 +11,6 @@ class Detail extends StatefulWidget {
 }
 
 class _DetailState extends State<Detail> {
-  int _index = -1;
-
-  List<GestureDetector> _listNumber(int size) {
-    return List.generate(size, (index) {
-      return GestureDetector(
-        onTap: () {
-          setState(() {
-            _index = index;
-          });
-        },
-        child: Card(
-          color: _index == index
-              ? Color.fromRGBO(63, 81, 243, 1)
-              : Colors.white,
-          child: Column(
-            children: [
-              Container(
-                width: 60,
-                height: 60,
-                alignment: Alignment.center,
-                child: Text(
-                  "${39 + index}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20,
-                    fontFamily: "Poppins",
-                    color: index == _index ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-              SizedBox(width: 10),
-            ],
-          ),
-        ),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;

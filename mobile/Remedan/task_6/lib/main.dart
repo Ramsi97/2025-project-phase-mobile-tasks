@@ -25,12 +25,66 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       initialRoute: "/home",
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case "/home":
+            return PageRouteBuilder(
+              pageBuilder: (_, __, ___) => HomePage(),
+              transitionsBuilder: (_, animation, __, child) {
+                // Fade in
+                return FadeTransition(opacity: animation, child: child);
+              },
+              transitionDuration: Duration(milliseconds: 400),
+            );
 
-      routes: {
-        "/home": (context) => HomePage(),
-        "/search": (context) => Search(),
-        "/addOrUpdate": (context) => AddOrUpdatePage(),
-        "/detail": (context) => Detail(),
+          case "/search":
+            return PageRouteBuilder(
+              settings: settings,
+              pageBuilder: (_, __, ___) => Search(),
+              transitionsBuilder: (_, animation, __, child) {
+                // Slide from right
+                return SlideTransition(
+                  position: Tween<Offset>(
+                    begin: Offset(1.0, 0.0),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child,
+                );
+              },
+              transitionDuration: Duration(milliseconds: 500),
+            );
+
+          case "/addOrUpdate":
+            return PageRouteBuilder(
+              settings: settings,
+              pageBuilder: (_, __, ___) => AddOrUpdatePage(),
+              transitionsBuilder: (_, animation, __, child) {
+                // Scale in
+                return ScaleTransition(
+                  scale: Tween<double>(begin: 0.8, end: 1.0).animate(animation),
+                  child: child,
+                );
+              },
+              transitionDuration: Duration(milliseconds: 400),
+            );
+
+          case "/detail":
+            return PageRouteBuilder(
+              settings: settings,
+              pageBuilder: (_, __, ___) => Detail(),
+              transitionsBuilder: (_, animation, __, child) {
+                // Rotation + Fade
+                return RotationTransition(
+                  turns: Tween(begin: 0.75, end: 1.0).animate(animation),
+                  child: FadeTransition(opacity: animation, child: child),
+                );
+              },
+              transitionDuration: Duration(milliseconds: 600),
+            );
+
+          default:
+            return null;
+        }
       },
     );
   }

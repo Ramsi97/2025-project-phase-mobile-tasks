@@ -8,16 +8,16 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   String name = "Yohannes";
   String formattedDate = DateFormat('MMMM, dd yyyy').format(DateTime.now());
 
   List<Product> products = [];
 
-  GestureDetector _createCardWidget(Product product) {
+  GestureDetector createCardWidget(Product product) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, "/detail", arguments: product);
@@ -175,7 +175,11 @@ class _HomePageState extends State<HomePage> {
                 ),
                 IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/search");
+                    Navigator.pushNamed(
+                      context,
+                      "/search",
+                      arguments: products,
+                    );
                   },
                   icon: Icon(Icons.search),
                 ),
@@ -189,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];
-                  return _createCardWidget(product);
+                  return createCardWidget(product);
                 },
               ),
             ),

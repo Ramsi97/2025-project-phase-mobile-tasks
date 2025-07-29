@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:task_6/add_or_update_page.dart';
 import 'detail.dart';
 import 'home_page.dart';
 
 class Search extends StatefulWidget {
-  const Search({super.key});
+  const Search({super.key, Object? args});
 
   @override
   State<Search> createState() => _SearchState();
@@ -81,73 +82,90 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Search Product")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color.fromRGBO(102, 102, 102, 1),
-                        ), // Default (not focused)
-                      ),
+    final args = ModalRoute.of(context)!.settings.arguments;
+    final homepage = HomePageState();
+    if (args is List<Product>) {
+      return Scaffold(
+        appBar: AppBar(title: Text("Search Product")),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(102, 102, 102, 1),
+                          ), // Default (not focused)
+                        ),
 
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
-                      ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
 
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.arrow_right_alt),
+                        suffixIcon: IconButton(
+                          onPressed: () {},
+                          icon: Icon(Icons.arrow_right_alt),
+                        ),
                       ),
                     ),
                   ),
-                ),
 
-                SizedBox(width: 10),
+                  SizedBox(width: 10),
 
-                Container(
-                  width: 43,
-                  height: 43,
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(63, 81, 243, 1),
-                    borderRadius: BorderRadius.circular(12),
+                  Container(
+                    width: 43,
+                    height: 43,
+                    decoration: BoxDecoration(
+                      color: Color.fromRGBO(63, 81, 243, 1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.filter_list, color: Colors.white),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+
+                          isScrollControlled: true,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+
+                          builder: (context) {
+                            return FractionallySizedBox(
+                              heightFactor: 0.5,
+                              child: FilterBottomSheet(),
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
-                  child: IconButton(
-                    icon: Icon(Icons.filter_list, color: Colors.white),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-
-                        isScrollControlled: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-
-                        builder: (context) {
-                          return FractionallySizedBox(
-                            heightFactor: 0.5,
-                            child: FilterBottomSheet(),
-                          );
-                        },
-                      );
-                    },
-                  ),
+                ],
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: args.length,
+                  itemBuilder: (context, index) {
+                    final product = args[index];
+                    return homepage.createCardWidget(product);
+                  },
                 ),
-              ],
-            ),
-            Expanded(child: ListView(children: _buildCardWidget(3))),
-          ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(title: Text("Search")),
+        body: Center(child: Text("No products found.")),
+      );
+    }
   }
 }
 
