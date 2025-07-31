@@ -1,18 +1,18 @@
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
-import 'package:ecommerce_app/features/products/domain/usecases/view_all_products.dart';
+import 'package:ecommerce_app/features/products/domain/usecases/view_all_product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 class MockProductRepository extends Mock implements ProductRepository {}
 
 void main() {
-  late ViewAllProducts usecase;
+  late ViewAllProduct usecase;
   late MockProductRepository mockRepo;
 
   setUp(() {
     mockRepo = MockProductRepository();
-    usecase = ViewAllProducts(mockRepo);
+    usecase = ViewAllProduct(mockRepo);
   });
 
   final tProductList = [
