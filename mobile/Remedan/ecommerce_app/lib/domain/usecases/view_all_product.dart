@@ -1,7 +1,12 @@
+import '../entities/product.dart';
 import '../repositories/product_repository.dart';
 
 class ViewAllProduct {
-  final ProductRepository productRepository;
+  final ProductRepository repository;
 
-  ViewAllProduct(this.productRepository);
+  ViewAllProduct(this.repository);
+
+  Future<List<Product>> call() async {
+    return await repository.getAllProducts();
+  }
 }
