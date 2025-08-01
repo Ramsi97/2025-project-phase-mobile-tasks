@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/view_all_product.dart';
@@ -31,13 +32,14 @@ void main() {
       imageUrl: 'bag.png',
     ),
   ];
-
   test('should return list of products from repository', () async {
-    when(mockRepo.getAllProducts()).thenAnswer((_) async => tProductList);
+    when(
+      mockRepo.getAllProducts(),
+    ).thenAnswer((_) async => Right(tProductList));
 
     final result = await usecase();
 
-    expect(result, tProductList);
+    expect(result, Right(tProductList));
     verify(mockRepo.getAllProducts());
     verifyNoMoreInteractions(mockRepo);
   });
