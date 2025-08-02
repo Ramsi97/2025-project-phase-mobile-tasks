@@ -5,8 +5,6 @@ import 'package:ecommerce_app/features/products/domain/usecases/view_all_product
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
-
 import 'view_all_product_test.mocks.dart';
 
 // The main function is needed for the build_runner to work correctly

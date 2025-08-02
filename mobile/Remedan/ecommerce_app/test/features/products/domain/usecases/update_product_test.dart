@@ -2,10 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/update_product.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-
-import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
 
 // This line is crucial — use the exact test file name before `.mocks.dart`
 
