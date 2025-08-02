@@ -1,45 +1,50 @@
 import 'package:dartz/dartz.dart';
+import 'package:ecommerce_app/core/usecases/usecase.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
-import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/view_all_product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockProductRepository extends Mock implements ProductRepository {}
+import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
 
+import 'view_all_product_test.mocks.dart';
+
+// The main function is needed for the build_runner to work correctly
 void main() {
-  late ViewAllProduct usecase;
+  // Your tests go here
   late MockProductRepository mockRepo;
+  late ViewAllProduct usecase;
 
   setUp(() {
     mockRepo = MockProductRepository();
     usecase = ViewAllProduct(mockRepo);
   });
-
-  final tProductList = [
+  final tProducts = [
     const Product(
       id: '1',
       name: 'Shoes',
-      description: 'Comfortable shoes',
-      price: 100.0,
+      description: 'Running shoes',
+      price: 89.99,
       imageUrl: 'shoes.png',
     ),
     const Product(
       id: '2',
-      name: 'Bag',
-      description: 'Stylish bag',
-      price: 75.0,
-      imageUrl: 'bag.png',
+      name: 'T-shirt',
+      description: 'Cotton T-shirt',
+      price: 19.99,
+      imageUrl: 'tshirt.png',
     ),
   ];
-  test('should return list of products from repository', () async {
-    when(
-      mockRepo.getAllProducts(),
-    ).thenAnswer((_) async => Right(tProductList));
 
-    final result = await usecase();
+  test('should call getAllProducts on repository', () async {
+    // Arrange
+    when(mockRepo.getAllProducts()).thenAnswer((_) async => Right(tProducts));
 
-    expect(result, Right(tProductList));
+    // Act
+    final result = await usecase(NoParams());
+
+    // Assert
+    expect(result, Right(tProducts));
     verify(mockRepo.getAllProducts());
     verifyNoMoreInteractions(mockRepo);
   });

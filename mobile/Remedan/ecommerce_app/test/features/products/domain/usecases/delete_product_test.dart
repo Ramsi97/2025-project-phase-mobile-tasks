@@ -1,29 +1,29 @@
 import 'package:dartz/dartz.dart';
-import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/delete_product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockProductRepository extends Mock implements ProductRepository {}
+import 'delete_product_test.mocks.dart';
 
 void main() {
-  late DeleteProduct usecase;
   late MockProductRepository mockRepo;
+  late DeleteProduct usecase;
 
   setUp(() {
     mockRepo = MockProductRepository();
     usecase = DeleteProduct(mockRepo);
   });
 
-  const tProductId = '1';
+  final tProductId = '1';
 
   test('should call deleteProduct on repository', () async {
     when(
       mockRepo.deleteProduct(tProductId),
-    ).thenAnswer((_) async => Future.value(const Right(null)));
+    ).thenAnswer((_) async => const Right(null));
 
-    await usecase(tProductId);
+    final result = await usecase(tProductId);
 
+    expect(result, const Right(null));
     verify(mockRepo.deleteProduct(tProductId));
     verifyNoMoreInteractions(mockRepo);
   });

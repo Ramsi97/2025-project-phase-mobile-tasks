@@ -1,14 +1,21 @@
+import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
-import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/update_product.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-class MockProductRepository extends Mock implements ProductRepository {}
+import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
 
+// This line is crucial — use the exact test file name before `.mocks.dart`
+
+import 'update_product_test.mocks.dart';
+
+// The main function is needed for the build_runner to work correctly
 void main() {
-  late UpdateProduct usecase;
+  // Your tests go here
   late MockProductRepository mockRepo;
+  late UpdateProduct usecase;
 
   setUp(() {
     mockRepo = MockProductRepository();
@@ -17,19 +24,30 @@ void main() {
 
   final tProduct = const Product(
     id: '1',
-    name: 'Updated Shoes',
-    description: 'Updated description',
+    name: 'before Updated Shoes',
+    description: 'beforeupdated description',
     price: 99.99,
     imageUrl: 'updated.png',
   );
+  final updatedProduct = const Product(
+    id: '1',
+    name: 'Updated Shoes',
+    description: 'Updated description',
+    price: 199.99,
+    imageUrl: 'updated.png',
+  );
 
-  test('should call updateProduct on repository', () async {
+  test('should update a product in the repository', () async {
+    // Arrange
     when(
       mockRepo.updateProduct(tProduct),
-    ).thenAnswer((_) async => Future.value());
+    ).thenAnswer((_) async => Right(updatedProduct));
 
-    await usecase(tProduct);
+    // Act
+    final result = await usecase(tProduct);
 
+    // Assert
+    expect(result, Right(updatedProduct));
     verify(mockRepo.updateProduct(tProduct));
     verifyNoMoreInteractions(mockRepo);
   });

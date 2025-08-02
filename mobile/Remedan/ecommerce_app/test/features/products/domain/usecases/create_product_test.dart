@@ -1,15 +1,14 @@
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
-import 'package:ecommerce_app/features/products/domain/repositories/product_repository.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/create_product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockProductRepository extends Mock implements ProductRepository {}
+import 'create_product_test.mocks.dart';
 
 void main() {
-  late CreateProduct usecase;
   late MockProductRepository mockRepo;
+  late CreateProduct usecase;
 
   setUp(() {
     mockRepo = MockProductRepository();
@@ -27,9 +26,11 @@ void main() {
   test('should call createProduct on repository', () async {
     when(
       mockRepo.createProduct(tProduct),
-    ).thenAnswer((_) async => Future.value(const Right(unit)));
+    ).thenAnswer((_) async => const Right(null));
 
-    await usecase(tProduct);
+    final result = await usecase(tProduct);
+
+    expect(result, const Right(null));
 
     verify(mockRepo.createProduct(tProduct));
     verifyNoMoreInteractions(mockRepo);
