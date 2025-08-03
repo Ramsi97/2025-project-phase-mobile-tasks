@@ -19,62 +19,35 @@ class ProductRepositoryImpl implements ProductRepository {
     required this.networkInfo,
   });
 
-  @override
-  Future<Either<Failure, List<Product>>> getAllProducts() async {
-    if (await networkInfo.isConnected) {
-      try {
-        final remoteProducts = await remoteDataSource.getAllProducts();
-        localDataSource.cacheProducts(remoteProducts);
-        return Right(remoteProducts);
-      } catch (e) {
-        return Left(ServerFailure());
-      }
-    } else {
-      try {
-        return localDataSource.getCachedProducts();
-      } catch (e) {
-        return Left(CacheFailure());
-      }
-    }
-  }
-
-  @override
-  Future<Either<Failure, Product?>> getProductById(String id) async {
-    try {
-      final productModel = await remoteDataSource.getProductById(id);
-      return Right(productModel);
-    } catch (e) {
-      return Left(ServerFailure());
-    }
-  }
+  // Implement all abstract methods from ProductRepository
 
   @override
   Future<Either<Failure, void>> createProduct(Product product) async {
-    try {
-      await remoteDataSource.createProduct(product as ProductModel);
-      return const Right(null);
-    } catch (e) {
-      return Left(ServerFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> updateProduct(Product product) async {
-    try {
-      await remoteDataSource.updateProduct(product as ProductModel);
-      return const Right(null);
-    } catch (e) {
-      return Left(ServerFailure());
-    }
+    // TODO: implement createProduct
+    throw UnimplementedError();
   }
 
   @override
   Future<Either<Failure, void>> deleteProduct(String id) async {
-    try {
-      await remoteDataSource.deleteProduct(id);
-      return const Right(null);
-    } catch (e) {
-      return Left(ServerFailure());
-    }
+    // TODO: implement deleteProduct
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<Product>>> getAllProducts() async {
+    // TODO: implement getAllProducts
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, Product>> getProductById(String id) async {
+    // TODO: implement getProductById
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, void>> updateProduct(Product product) async {
+    // TODO: implement updateProduct
+    throw UnimplementedError();
   }
 }

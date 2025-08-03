@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:ecommerce_app/features/products/data/models/product_model.dart';
-import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixture/fixture.dart';

@@ -1,9 +1,12 @@
-import 'package:dartz/dartz.dart';
-
-import '../../../../core/error/failure.dart';
 import '../models/product_model.dart';
 
 abstract class ProductLocalDataSource {
-  Future<Either<Failure, List<ProductModel>>> getCachedProducts();
-  Future<Either<Failure, void>> cacheProducts(List<ProductModel> products);
+  /// Gets the cached products from local storage.
+  /// Throws [CacheException] if no cached data is present.
+
+  Future<List<ProductModel>> getCachedProducts();
+
+  /// Caches the given products in local storage.
+  /// Throws [CacheException] if caching fails.
+  Future<void> cacheProducts(List<ProductModel> products);
 }
