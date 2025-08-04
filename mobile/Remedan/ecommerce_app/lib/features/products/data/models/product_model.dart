@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/product.dart';
 
-class ProductModel extends Product {
+class ProductModel extends Product with EquatableMixin {
   const ProductModel({
     required super.id,
     required super.name,
@@ -26,4 +28,14 @@ class ProductModel extends Product {
     'price': price,
     'imageUrl': imageUrl,
   };
+
+  Product toEntity() {
+    return Product(
+      id: id,
+      name: name,
+      description: description,
+      price: price,
+      imageUrl: imageUrl,
+    );
+  }
 }
