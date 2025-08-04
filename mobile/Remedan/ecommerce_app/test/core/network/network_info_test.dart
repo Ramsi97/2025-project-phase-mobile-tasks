@@ -3,26 +3,33 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mockito/mockito.dart';
 
-class MockConnectionChecker extends Mock implements InternetConnectionChecker {}
+class MockInternetConnectionChecker extends Mock
+    implements InternetConnectionChecker {}
 
 void main() {
-  late NetworkInfoImpl networkInfoImpl;
-  late MockConnectionChecker mockChecker;
+  late NetworkInfoImpl networkInfo;
+  late MockInternetConnectionChecker mockInternetConnectionChecker;
 
   setUp(() {
-    mockChecker = MockConnectionChecker();
-    networkInfoImpl = NetworkInfoImpl(mockChecker);
+    mockInternetConnectionChecker = MockInternetConnectionChecker();
+    networkInfo = NetworkInfoImpl(mockInternetConnectionChecker);
   });
 
-  test(
-    'should forward the call to InternetConnectionChecker.hasConnection',
-    () async {
-      when(mockChecker.hasConnection).thenAnswer((_) async => true);
+  group('isConnected', () {
+    test('should return false when there is no internet connection', () async {
+      // Arrange
 
-      final result = await networkInfoImpl.isConnected;
+      final tHasConnection = Future.value(true);
+      when(
+        mockInternetConnectionChecker.hasConnection,
+      ).thenAnswer((_) async => tHasConnection);
 
-      verify(mockChecker.hasConnection);
-      expect(result, true);
-    },
-  );
+      // Act
+      final result = networkInfo.isConnected;
+
+      // Assert
+      expect(await result, await tHasConnection);
+      verify(mockInternetConnectionChecker.hasConnection);
+    });
+  });
 }
