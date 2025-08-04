@@ -68,12 +68,6 @@ void main() {
       final expectedJsonString = json.encode(
         tProductModels.map((e) => e.toJson()).toList(),
       );
-      when(
-        mockSharedPreferences.setString(
-          tProductModels as String,
-          expectedJsonString,
-        ),
-      ).thenAnswer((_) async => true); // or just `=> true;` if method is sync
 
       // Act
       await localDataSource.cacheProducts(tProductModels);

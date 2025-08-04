@@ -47,13 +47,21 @@ class ProductLocalDataSourceImpl implements ProductLocalDataSource {
 
   @override
   Future<ProductModel?> getProductById(String id) {
-    final products = sharedPreferences.getString(CACHED_PRODUCTS);
-    if (products != null) {
-      final List decoded = json.decode(products);
-      final product = decoded
+    final jsonString = sharedPreferences.getString(CACHED_PRODUCTS);
+
+    if (jsonString != null) {
+      final List decoded = json.decode(jsonString);
+      final List<ProductModel> products = decoded
           .map((e) => ProductModel.fromJson(e))
-          .firstWhere((p) => p.id == id, orElse: () => null);
-      return Future.value(product);
+          .toList();
+
+      try {
+        final product = products.firstWhere((p) => p.id == id);
+        return Future.value(product);
+      } catch (e) {
+        // No product found with the given ID
+        return Future.value(null);
+      }
     } else {
       throw CacheException();
     }
