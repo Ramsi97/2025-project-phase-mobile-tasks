@@ -9,4 +9,6 @@ abstract class ProductLocalDataSource {
   /// Caches the given products in local storage.
   /// Throws [CacheException] if caching fails.
   Future<void> cacheProducts(List<ProductModel> products);
+
+  Future<ProductModel?> getProductById(String id);
 }
