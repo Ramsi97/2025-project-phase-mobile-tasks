@@ -85,7 +85,11 @@ class ProductRepositoryImpl implements ProductRepository {
     if (await networkInfo.isConnected) {
       try {
         final productModel = await remoteDataSource.getProductById(id);
-        return Right(productModel!.toEntity());
+        if (productModel != null) {
+          return Right(productModel.toEntity());
+        } else {
+          return Left(NotFoundFailure());
+        }
       } on ServerException {
         return Left(ServerFailure());
       }
