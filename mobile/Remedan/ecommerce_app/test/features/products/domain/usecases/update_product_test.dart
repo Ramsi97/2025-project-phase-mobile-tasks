@@ -3,10 +3,9 @@ import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/update_product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import '../../../../mocks/mock_test.mocks.dart';
 
 // This line is crucial — use the exact test file name before `.mocks.dart`
-
-import 'update_product_test.mocks.dart';
 
 // The main function is needed for the build_runner to work correctly
 void main() {

@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
+import 'package:ecommerce_app/core/error/failure.dart';
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/create_product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
-import 'create_product_test.mocks.dart';
+import '../../../../mocks/mock_test.mocks.dart';
 
 void main() {
   late MockProductRepository mockRepo;
@@ -26,11 +26,11 @@ void main() {
   test('should call createProduct on repository', () async {
     when(
       mockRepo.createProduct(tProduct),
-    ).thenAnswer((_) async => const Right(null));
+    ).thenAnswer((_) async => const Right<Failure, void>(null));
 
     final result = await usecase(tProduct);
 
-    expect(result, const Right(null));
+    expect(result, const Right<Failure, void>(null));
 
     verify(mockRepo.createProduct(tProduct));
     verifyNoMoreInteractions(mockRepo);

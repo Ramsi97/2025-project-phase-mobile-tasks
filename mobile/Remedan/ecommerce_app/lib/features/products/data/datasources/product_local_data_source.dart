@@ -59,7 +59,6 @@ class ProductLocalDataSourceImpl implements ProductLocalDataSource {
         final product = products.firstWhere((p) => p.id == id);
         return Future.value(product);
       } catch (e) {
-        // No product found with the given ID
         return Future.value(null);
       }
     } else {

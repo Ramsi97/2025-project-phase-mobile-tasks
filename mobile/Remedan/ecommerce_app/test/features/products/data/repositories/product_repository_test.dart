@@ -6,8 +6,7 @@ import 'package:ecommerce_app/features/products/data/repositories/product_reposi
 import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
-import 'product_repository_test.mocks.dart';
+import '../../../../mocks/mock_test.mocks.dart';
 
 void main() {
   late MockProductLocalDataSource mockLocalDataSource;
@@ -65,7 +64,7 @@ void main() {
         final result = await repository.createProduct(tProduct);
 
         // Assert
-        expect(result, const Right(null));
+        expect(result, const Right<Failure, void>(null));
         verify(mockRemoteDataSource.createProduct(tProductModel));
         verifyNoMoreInteractions(mockRemoteDataSource);
       },

@@ -2,8 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ecommerce_app/features/products/domain/usecases/delete_product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-
-import 'delete_product_test.mocks.dart';
+import '../../../../mocks/mock_test.mocks.dart';
 
 void main() {
   late MockProductRepository mockRepo;
