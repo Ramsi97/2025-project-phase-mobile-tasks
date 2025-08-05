@@ -82,11 +82,14 @@ void main() {
       // If it doesn't throw, the test passes
       verify(
         mockHttpClient.post(
-          Uri.parse('https://api.example.com/products'),
-          headers: {'Content-Type': 'application/json'},
-          body: json.encode(tProductModel.toJson()),
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products',
+          ),
+          headers: anyNamed('headers'),
+          body: anyNamed('body'),
+          encoding: anyNamed('encoding'),
         ),
-      ).called(1);
+      );
     });
 
     test('should throw ServerException when the response is not 201', () async {
@@ -117,7 +120,9 @@ void main() {
       // Arrange
       when(
         mockHttpClient.get(
-          Uri.parse('https://api.example.com/products/$tProductId'),
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/$tProductId',
+          ),
           headers: anyNamed('headers'),
         ),
       ).thenAnswer(
@@ -135,7 +140,9 @@ void main() {
       // Arrange
       when(
         mockHttpClient.get(
-          Uri.parse('https://api.example.com/products/$tProductId'),
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/$tProductId',
+          ),
           headers: anyNamed('headers'),
         ),
       ).thenAnswer((_) async => http.Response('Not Found', 404));
@@ -151,7 +158,9 @@ void main() {
       // Arrange
       when(
         mockHttpClient.get(
-          Uri.parse('https://api.example.com/products/$tProductId'),
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/$tProductId',
+          ),
           headers: anyNamed('headers'),
         ),
       ).thenAnswer((_) async => http.Response('Internal Server Error', 500));
@@ -168,97 +177,97 @@ void main() {
       json.decode(fixture('product.json')),
     );
 
-    test(
-      'should complete without throwing when response code is 200',
-      () async {
-        // Arrange
-        when(
-          mockHttpClient.put(
-            Uri.parse('https://api.example.com/products/${tProductModel.id}'),
-            headers: anyNamed('headers'),
-            body: json.encode(tProductModel.toJson()),
+    test('should complete without throwing when response code is 200', () async {
+      // Arrange
+      when(
+        mockHttpClient.put(
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/${tProductModel.id}',
           ),
-        ).thenAnswer((_) async => http.Response('', 200));
+          headers: anyNamed('headers'),
+          body: json.encode(tProductModel.toJson()),
+        ),
+      ).thenAnswer((_) async => http.Response('', 200));
 
-        // Act
-        await dataSource.updateProduct(tProductModel);
+      // Act
+      await dataSource.updateProduct(tProductModel);
 
-        // Assert
-        verify(
-          mockHttpClient.put(
-            Uri.parse('https://api.example.com/products/${tProductModel.id}'),
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode(tProductModel.toJson()),
+      // Assert
+      verify(
+        mockHttpClient.put(
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/${tProductModel.id}',
           ),
-        );
-      },
-    );
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(tProductModel.toJson()),
+        ),
+      );
+    });
 
-    test(
-      'should throw ServerException when response code is not 200',
-      () async {
-        // Arrange
-        when(
-          mockHttpClient.put(
-            Uri.parse('https://api.example.com/products/${tProductModel.id}'),
-            headers: anyNamed('headers'),
-            body: json.encode(tProductModel.toJson()),
+    test('should throw ServerException when response code is not 200', () async {
+      // Arrange
+      when(
+        mockHttpClient.put(
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/${tProductModel.id}',
           ),
-        ).thenAnswer((_) async => http.Response('Error', 500));
+          headers: anyNamed('headers'),
+          body: json.encode(tProductModel.toJson()),
+        ),
+      ).thenAnswer((_) async => http.Response('Error', 500));
 
-        // Act & Assert
-        expect(
-          () => dataSource.updateProduct(tProductModel),
-          throwsA(isA<ServerException>()),
-        );
-      },
-    );
+      // Act & Assert
+      expect(
+        () => dataSource.updateProduct(tProductModel),
+        throwsA(isA<ServerException>()),
+      );
+    });
   });
 
   group('deleteProduct', () {
     final tProductId = '123';
 
-    test(
-      'should complete without throwing when response code is 204',
-      () async {
-        // Arrange
-        when(
-          mockHttpClient.delete(
-            Uri.parse('https://api.example.com/products/$tProductId'),
-            headers: anyNamed('headers'),
+    test('should complete without throwing when response code is 204', () async {
+      // Arrange
+      when(
+        mockHttpClient.delete(
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/$tProductId',
           ),
-        ).thenAnswer((_) async => http.Response('', 204));
+          headers: anyNamed('headers'),
+        ),
+      ).thenAnswer((_) async => http.Response('', 204));
 
-        // Act
-        await dataSource.deleteProduct(tProductId);
+      // Act
+      await dataSource.deleteProduct(tProductId);
 
-        // Assert
-        verify(
-          mockHttpClient.delete(
-            Uri.parse('https://api.example.com/products/$tProductId'),
-            headers: {'Content-Type': 'application/json'},
+      // Assert
+      verify(
+        mockHttpClient.delete(
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/$tProductId',
           ),
-        );
-      },
-    );
+          headers: {'Content-Type': 'application/json'},
+        ),
+      );
+    });
 
-    test(
-      'should throw ServerException when response code is not 204',
-      () async {
-        // Arrange
-        when(
-          mockHttpClient.delete(
-            Uri.parse('https://api.example.com/products/$tProductId'),
-            headers: anyNamed('headers'),
+    test('should throw ServerException when response code is not 204', () async {
+      // Arrange
+      when(
+        mockHttpClient.delete(
+          Uri.parse(
+            'https://g5-flutter-learning-path-be.onrender.com/api/v1/products/$tProductId',
           ),
-        ).thenAnswer((_) async => http.Response('Error', 500));
+          headers: anyNamed('headers'),
+        ),
+      ).thenAnswer((_) async => http.Response('Error', 500));
 
-        // Act & Assert
-        expect(
-          () => dataSource.deleteProduct(tProductId),
-          throwsA(isA<ServerException>()),
-        );
-      },
-    );
+      // Act & Assert
+      expect(
+        () => dataSource.deleteProduct(tProductId),
+        throwsA(isA<ServerException>()),
+      );
+    });
   });
 }

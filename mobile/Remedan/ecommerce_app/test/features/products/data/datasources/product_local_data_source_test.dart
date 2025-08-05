@@ -5,12 +5,9 @@ import 'package:ecommerce_app/features/products/data/datasources/product_local_d
 import 'package:ecommerce_app/features/products/data/models/product_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../mocks/mock_test.mocks.dart';
 
 import '../../../../fixture/fixture.dart';
-
-// class MockShredPreferences extends Mock implements SharedPreferences {}
+import '../../../../mocks/mock_test.mocks.dart';
 
 void main() {
   late ProductLocalDataSourceImpl localDataSource;
