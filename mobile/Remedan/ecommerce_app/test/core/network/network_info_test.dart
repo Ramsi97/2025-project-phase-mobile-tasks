@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/core/network/network_info.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'network_info_test.mocks.dart';
+import '../../mocks/mock_test.mocks.dart';
 
 void main() {
   late NetworkInfoImpl networkInfo;

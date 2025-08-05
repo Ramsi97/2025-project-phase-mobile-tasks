@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:ecommerce_app/core/error/exception.dart';
 import 'package:ecommerce_app/features/products/data/datasources/product_local_data_source.dart';
 import 'package:ecommerce_app/features/products/data/models/product_model.dart';
-import 'package:ecommerce_app/features/products/domain/entities/product.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../mocks/mock_test.mocks.dart';
 
 import '../../../../fixture/fixture.dart';
 
-class MockShredPreferences extends Mock implements SharedPreferences {}
+// class MockShredPreferences extends Mock implements SharedPreferences {}
 
 void main() {
   late ProductLocalDataSourceImpl localDataSource;
-  late MockShredPreferences mockSharedPreferences;
+  late MockSharedPreferences mockSharedPreferences;
 
   setUp(() {
-    mockSharedPreferences = MockShredPreferences();
+    mockSharedPreferences = MockSharedPreferences();
     localDataSource = ProductLocalDataSourceImpl(mockSharedPreferences);
   });
 
